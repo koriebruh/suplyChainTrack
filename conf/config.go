@@ -15,6 +15,7 @@ type Config struct {
 }
 
 type AppConfig struct {
+	Version        string
 	Environment    string
 	Port           int
 	Name           string
@@ -53,6 +54,7 @@ func LoadConfig() *Config {
 
 	return &Config{
 		AppConfig: AppConfig{
+			Version:        GetEnv("APP_VERSION", ""),
 			Environment:    GetEnv("APP_ENV", "development"),
 			Port:           appPort,
 			Name:           GetEnv("APP_NAME", "SupplyChainTracker -development"),
