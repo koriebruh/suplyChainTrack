@@ -24,3 +24,9 @@ swag init -g cmd/main.go
 tambahkan annotation ke handler lalu swag init lagi unutk update dokumentasi
 
 localhost:8080/docs/index.html # untuk cek hasil dokumnetasi
+
+docker compose -f docker/docker-compose.yml config --services
+
+# Prometheus implementation go
+go get github.com/prometheus/client_golang/prometheus
+go get github.com/prometheus/client_golang/prometheus/promhttp

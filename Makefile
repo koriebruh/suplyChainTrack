@@ -37,6 +37,7 @@ fmt:
 	$(GOCMD) fmt ./...
 
 swagger:
+	@echo "Generating swagger or updating documentation..."
 	swag init -g cmd/main.go
 
 # Database migrations
@@ -55,3 +56,19 @@ migrate-down:
 migrate-create:
 	@echo "Creating new migration: $(name)"
 	migrate create -ext sql -dir db/migrations $(name)
+
+docker-build:
+	@echo "Building Docker image And Run another container..."
+	docker compose -f docker/docker-compose.yml up -d --build
+
+docker-ps:
+	@echo "Listing running Docker containers..."
+	docker compose -f docker/docker-compose.yml ps
+
+docker-down:
+	@echo "Stopping and removing Docker containers, networks, and volumes..."
+	docker compose -f docker/docker-compose.yml down --volumes
+
+docker-logs:
+	@echo "Showing logs for container: $(CONTAINER)"
+	docker compose -f docker/docker-compose.yml logs -f $(CONTAINER)

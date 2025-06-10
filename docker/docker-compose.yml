@@ -1,0 +1,130 @@
+services:
+  go-supply-chain-track:
+    container_name: go-supply-chain-track
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - prometheus
+      - grafana
+      - postgres_exporter
+      - redis
+    environment:
+      - APP_ENV=development
+      - APP_NAME=SupplyChainTrackerContainer
+      - APP_VERSION=1.0.0
+      - API_KEY=09f9e80c-276f-4255-80b5-309e496b11ae
+      - ALLOWED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+      - ENABLE_PREFORK=false
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=korie123
+      - DB_NAME=suply_chain_track
+      - DB_SSL_MODE=disable
+      - DATABASE_URL=postgresql://postgres:korie123@postgres:5432/suply_chain_track?sslmode=disable
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=korie123
+      - JWT_SECRET=k128989daswh98dqi2
+      - JWT_EXPIRATION=3600
+      - ETHEREUM_NODE_URL=https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID
+      - ETHEREUM_CONTRACT_ADDRESS=0xYourContractAddress
+      - PRIVATE_KEY=0xYourPrivateKey
+      - PUBLIC_KEY=0xYourPublicKey
+
+    networks:
+      - supplychain-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/api/v1/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - supplychain-network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3030:3000"  # Changed from 3000 to 3030 to avoid conflict
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - prometheus
+    networks:
+      - supplychain-network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: supplychain-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=korie123
+      - POSTGRES_DB=suply_chain_track
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - supplychain-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    container_name: postgres_exporter
+    restart: always
+    ports:
+      - "9187:9187"
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:korie123@postgres:5432/suply_chain_track?sslmode=disable"
+    depends_on:
+      - postgres
+    networks:
+      - supplychain-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: supplychain-redis
+    command: redis-server --appendonly yes --replica-read-only no
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - supplychain-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  supplychain-network:
+    driver: bridge
