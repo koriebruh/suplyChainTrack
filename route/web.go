@@ -9,10 +9,12 @@ import (
 	"github.com/koriebruh/suplyChainTrack/conf"
 	"github.com/koriebruh/suplyChainTrack/internal/handler"
 	"github.com/koriebruh/suplyChainTrack/internal/metirc"
+	"github.com/koriebruh/suplyChainTrack/pkg"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func RunApplicationContext() {
+	pkg.NewSlog()               // Initialize logging
 	config := conf.LoadConfig() // Load configuration from .env or environment variables
 	metricsExporter := metirc.NewAppMetricsExporter()
 

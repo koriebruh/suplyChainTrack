@@ -162,13 +162,14 @@ var CompressionConfig = compress.New(compress.Config{
 })
 
 // LoggerConfig untuk logging
+// for logging http requests and responses only
 var LoggerConfig = logger.New(logger.Config{
 	Format:     "${time} | ${status} | ${latency} | ${ip} | ${method} | ${path} | ${error}\n",
 	TimeFormat: "2006-01-02 15:04:05",
 	TimeZone:   "Local",
 	Output:     os.Stdout,
 	Done: func(c *fiber.Ctx, logString []byte) {
-		// Custom log processing jika diperlukan
+		// Custom logger processing jika diperlukan
 		// Bisa dikirim ke logging service seperti ELK, Fluentd, etc.
 	},
 })

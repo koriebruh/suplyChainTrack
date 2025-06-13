@@ -13,6 +13,13 @@ ifneq (,$(wildcard .env))
   export
 endif
 
+
+help: ## Show this help message
+	@echo 'Usage: make [target]'
+	@echo ''
+	@echo 'Docker Development Commands:'
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
 # Running binary
 build:
 	$(GOCMD) build $(GO_FLAGS) -o $(BINARY_NAME) ./cmd
@@ -57,18 +64,19 @@ migrate-create:
 	@echo "Creating new migration: $(name)"
 	migrate create -ext sql -dir db/migrations $(name)
 
-docker-build:
+build:
 	@echo "Building Docker image And Run another container..."
 	docker compose -f docker/docker-compose.yml up -d --build
 
-docker-ps:
+ps:
 	@echo "Listing running Docker containers..."
 	docker compose -f docker/docker-compose.yml ps
 
-docker-down:
+down:
 	@echo "Stopping and removing Docker containers, networks, and volumes..."
 	docker compose -f docker/docker-compose.yml down --volumes
 
-docker-logs:
-	@echo "Showing logs for container: $(CONTAINER)"
-	docker compose -f docker/docker-compose.yml logs -f $(CONTAINER)
+logs:
+	@echo "Showing logs for container: $(C)"
+	docker compose -f docker/docker-compose.yml logs -f $(C)
+

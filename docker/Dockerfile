@@ -19,7 +19,6 @@ COPY --from=builder /app/db ./db
 # Test migrate
 RUN /usr/local/bin/migrate --version
 
-ENV APP_ENV=production
-ENV DB_HOST=postgres
-EXPOSE 3000
-CMD ["sh", "-c", "migrate -database \"$DATABASE_URL\" -path db/migrations up && ./app"]
+COPY docker/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+CMD ["sh", "./entrypoint.sh"]

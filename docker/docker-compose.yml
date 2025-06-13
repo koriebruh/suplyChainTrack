@@ -81,7 +81,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./db/migrations:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "5555:5432"
     networks:
       - supplychain-network
     restart: unless-stopped

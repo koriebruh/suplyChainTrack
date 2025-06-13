@@ -1,7 +1,6 @@
 package conf
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strconv"
@@ -37,20 +36,13 @@ var (
 )
 
 func LoadConfig() *Config {
-	configMutex.Do(func() {
-		if os.Getenv("APP_ENV") != "production" {
-			if err := godotenv.Load(); err != nil {
-				log.Printf("Warning: .env file not found: %v", err)
-			} else {
-				log.Println("Loaded .env file")
-			}
-		}
-	})
-
 	appPort, _ := strconv.Atoi(GetEnv("APP_PORT", "3000"))
 	dbPort, _ := strconv.Atoi(GetEnv("DB_PORT", "3000"))
 
-	log.Printf("%v Using APP_PORT: %d, DB_PORT: %d", GetEnv("APP_NAME", "SupplyChainTracker -development"), appPort, dbPort)
+	log.Printf("MODE %v | %v Using APP_PORT: %d, | DB_PORT: %d",
+		GetEnv("APP_ENV", "dev-bg"),
+		GetEnv("APP_NAME", "SupplyChainTracker -development"),
+		appPort, dbPort)
 
 	return &Config{
 		AppConfig: AppConfig{
