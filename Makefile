@@ -26,6 +26,7 @@ build:
 
 # running main apps
 run:
+	@echo "Running apps..."
 	$(GOCMD) run ./cmd
 
 # running all unit test
