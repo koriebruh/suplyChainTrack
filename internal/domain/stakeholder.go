@@ -12,6 +12,17 @@ const (
 	StakeholderTypeRetailer     = "retailer"
 )
 
+func IsValidStakeholderType(t string) bool {
+	switch t {
+	case StakeholderTypeManufacturer,
+		StakeholderTypeDistributor,
+		StakeholderTypeRetailer:
+		return true
+	default:
+		return false
+	}
+}
+
 type Stakeholder struct {
 	ID            uuid.UUID `json:"id" gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
 	Name          string    `json:"name" gorm:"type:varchar(255);not null"`

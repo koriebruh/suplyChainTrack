@@ -8,15 +8,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type Repositories struct {
+type RepositoriesManagers struct {
 	Stakeholder           StakeholderRepository
 	Product               ProductRepository
 	SupplyChainEvent      SupplyChainEventRepository
 	BlockchainTransaction BlockchainTransactionRepository
 }
 
-func NewRepositories(db *gorm.DB) *Repositories {
-	return &Repositories{
+func NewRepositories(db *gorm.DB) *RepositoriesManagers {
+	return &RepositoriesManagers{
 		Stakeholder:           NewStakeholderRepository(db),
 		Product:               NewProductRepository(db),
 		SupplyChainEvent:      NewSupplyChainEventRepository(db),

@@ -13,6 +13,18 @@ const (
 	EventTypeSold         = "sold"
 )
 
+func IsValidEventType(t string) bool {
+	switch t {
+	case EventTypeManufactured,
+		EventTypeShipped,
+		EventTypeReceived,
+		EventTypeSold:
+		return true
+	default:
+		return false
+	}
+}
+
 type SupplyChainEvent struct {
 	ID             uuid.UUID  `json:"id" gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
 	ProductID      *uuid.UUID `json:"product_id" gorm:"type:uuid;index"`

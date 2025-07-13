@@ -12,6 +12,17 @@ const (
 	TransactionStatusFailed    = "failed"
 )
 
+func IsValidTransactionStatus(status string) bool {
+	switch status {
+	case TransactionStatusPending,
+		TransactionStatusConfirmed,
+		TransactionStatusFailed:
+		return true
+	default:
+		return false
+	}
+}
+
 type BlockchainTransaction struct {
 	ID              uuid.UUID  `json:"id" gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
 	EventID         *uuid.UUID `json:"event_id" gorm:"type:uuid;index"`
