@@ -6,6 +6,8 @@ go get github.com/joho/godotenv
 go get github.com/gofiber/fiber/v2/middleware/recover
 go get github.com/gofiber/fiber/v2/middleware/helmet
 go github.com/gofiber/fiber/v2/middleware/recover
+go get -u gorm.io/gorm
+go get -u gorm.io/driver/postgres
 
 
 #go install -tags 'mysql,postgres,mongodb' github.com/golang-migrate/migrate/v4/cmd/migrate@latest

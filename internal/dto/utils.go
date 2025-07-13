@@ -15,18 +15,18 @@ type SupplyChainTrace struct {
 // StakeholderStats represents statistics for a stakeholder
 type StakeholderStats struct {
 	StakeholderID  uuid.UUID `json:"stakeholder_id"`
-	TotalProducts  int       `json:"total_products"`
-	TotalEvents    int       `json:"total_events"`
-	VerifiedEvents int       `json:"verified_events"`
-	PendingEvents  int       `json:"pending_events"`
+	TotalProducts  int64     `json:"total_products"`
+	TotalEvents    int64     `json:"total_events"`
+	VerifiedEvents int64     `json:"verified_events"`
+	PendingEvents  int64     `json:"pending_events"`
 	LastActivity   time.Time `json:"last_activity"`
 }
 
 // ProductStats represents statistics for a product
 type ProductStats struct {
 	ProductID       uuid.UUID  `json:"product_id"`
-	TotalEvents     int        `json:"total_events"`
-	VerifiedEvents  int        `json:"verified_events"`
+	TotalEvents     int64      `json:"total_events"`
+	VerifiedEvents  int64      `json:"verified_events"`
 	CurrentLocation *string    `json:"current_location"`
 	LastStakeholder *uuid.UUID `json:"last_stakeholder"`
 	LastActivity    time.Time  `json:"last_activity"`

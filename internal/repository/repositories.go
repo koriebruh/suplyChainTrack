@@ -5,7 +5,24 @@ import (
 	"github.com/google/uuid"
 	"github.com/koriebruh/suplyChainTrack/internal/domain"
 	"github.com/koriebruh/suplyChainTrack/internal/dto"
+	"gorm.io/gorm"
 )
+
+type Repositories struct {
+	Stakeholder           StakeholderRepository
+	Product               ProductRepository
+	SupplyChainEvent      SupplyChainEventRepository
+	BlockchainTransaction BlockchainTransactionRepository
+}
+
+func NewRepositories(db *gorm.DB) *Repositories {
+	return &Repositories{
+		Stakeholder:           NewStakeholderRepository(db),
+		Product:               NewProductRepository(db),
+		SupplyChainEvent:      NewSupplyChainEventRepository(db),
+		BlockchainTransaction: NewBlockchainTransactionRepository(db),
+	}
+}
 
 type StakeholderRepository interface {
 	Create(ctx context.Context, stakeholder *domain.Stakeholder) error
