@@ -77,10 +77,3 @@ type PaginatedResponse struct {
 	Offset  int         `json:"offset"`
 	HasMore bool        `json:"has_more"`
 }
-
-// Error response
-type ErrorResponse struct {
-	Error   string `json:"error"`
-	Message string `json:"message"`
-	Code    int    `json:"code"`
-}
